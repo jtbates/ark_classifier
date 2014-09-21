@@ -31,14 +31,17 @@ df <- read.csv("create_model/fp_tweets.csv", stringsAsFactors=F)
 # do the preprocessing to the data. this needs to be done before any prediction
 # using the model that is created.
 df$text.cleansed <- tolower(df$text)
-# remove the string "food poisoning" because every tweet has this in it...
-df$text.cleansed <- sapply(df$text.cleansed,
-                           function(x)gsub("food poisoning", "", x))
+### remove the string "food poisoning" because every tweet has this in it...
+##df$text.cleansed <- sapply(df$text.cleansed,
+##                           function(x)gsub("food poisoning", "", x))
 df$text.cleansed <- as.character(sapply(df$text.cleansed, replace.links))
+##df$text.cleansed <- as.character(sapply(df$text.cleansed,
+##                                        function(x)remove.word(x, "@")))
+##df$text.cleansed <- as.character(sapply(df$text.cleansed,
+##                                        function(x)remove.word(x, "rt")))
 df$text.cleansed <- as.character(sapply(df$text.cleansed,
-                                        function(x)remove.word(x, "@")))
-df$text.cleansed <- as.character(sapply(df$text.cleansed,
-                                        function(x)remove.word(x, "rt")))
+                                        function(x)gsub("\\s{2,}", " ", x)))
+
 # replace non-letters with spaces
 df$text.cleansed <- as.character(sapply(df$text.cleansed,
                                         function(x)gsub("[^[:alnum:]]", " ", x)))
@@ -52,10 +55,10 @@ df$text.cleansed <- as.character(sapply(df$text.cleansed,
 df <- subset(df, text.cleansed!="")
 
 # train the model using the textcat package
-fp.model <- textcat_profile_db(df$text.cleansed, df$manual_class)
+ark.model <- textcat_profile_db(df$text.cleansed, df$manual_class)
 # save model file to be used on server 
-save(list=c("fp.model", "replace.links", "remove.word"),
-     file="fp_model.Rdata")
+save(list=c("ark.model", "replace.links", "remove.word"),
+     file="ark_model.Rdata")
 
 # test it out...
-# textcat("i have the food poisoning", fp.model)
+# textcat("i'm going to kill myself", ark.model)
