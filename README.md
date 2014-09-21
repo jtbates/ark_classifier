@@ -29,6 +29,10 @@ The first part is to pre-process the data before training the model. In this cas
 [RMongo] (http://cran.r-project.org/web/packages/RMongo/index.html)
 [FastRWeb] (http://www.rforge.net/FastRWeb/)
 
+##Getkey3
+Compile the getkey3 shared library using the following command
+```R CMD SHLIB getkey3.c```
+
 ## Copyright
 
 Copyright (c) 2013 Cory Nissen. Released under the MIT License.
